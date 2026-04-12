@@ -28,20 +28,29 @@ export function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative w-full max-w-[280px] aspect-square"
       >
-        <div className="absolute -inset-4 bg-primary/10 rounded-full blur-2xl animate-pulse" />
-        <div className="relative bg-white w-full h-full rounded-full shadow-xl border border-primary/20 flex flex-col items-center justify-center p-8">
-          <Heart className="text-primary mb-2 fill-primary/20" size={40} strokeWidth={1.5} />
-          <span className="text-4xl sm:text-5xl font-serif font-bold text-primary tracking-tighter">
+        <motion.div 
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-2xl" 
+        />
+        <div className="relative bg-gradient-to-br from-white to-primary/5 dark:from-slate-800 dark:to-primary/10 w-full h-full rounded-full shadow-2xl border-2 border-primary/30 dark:border-primary/40 flex flex-col items-center justify-center p-8 backdrop-blur-sm">
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Heart className="text-primary mb-2 fill-primary/30 dark:fill-primary/40" size={48} strokeWidth={1.5} />
+          </motion.div>
+          <span className="text-5xl sm:text-6xl font-serif font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent dark:from-primary dark:to-accent tracking-tighter">
             {daysTogether ?? "—"}
           </span>
-          <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium text-muted-foreground mt-1">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold text-muted-foreground dark:text-muted-foreground mt-2">
             Days Together
           </span>
         </div>
       </motion.div>
 
-      <div className="text-center space-y-2 px-4">
-        <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-primary tracking-tight">
+      <div className="text-center space-y-3 px-4">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent dark:from-primary dark:to-accent tracking-tight">
           Our Journey
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground italic font-serif">
@@ -49,17 +58,23 @@ export function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full mt-4">
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-border flex flex-col items-center gap-1">
-          <Sparkles className="text-primary/60" size={20} />
-          <span className="text-xl font-serif font-medium">{Math.floor((daysTogether || 0) / 365)}</span>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Years</span>
-        </div>
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-border flex flex-col items-center gap-1">
-          <Heart className="text-primary/60" size={20} />
-          <span className="text-xl font-serif font-medium">{Math.floor(((daysTogether || 0) % 365) / 30)}</span>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Months</span>
-        </div>
+      <div className="grid grid-cols-2 gap-4 sm:gap-5 w-full mt-4">
+        <motion.div 
+          whileHover={{ scale: 1.05, y: -2 }}
+          className="bg-gradient-to-br from-white to-primary/5 dark:from-slate-800 dark:to-primary/10 p-5 rounded-2xl shadow-lg border border-primary/20 dark:border-primary/30 flex flex-col items-center gap-2 backdrop-blur-sm transition-all"
+        >
+          <Sparkles className="text-primary dark:text-primary" size={24} />
+          <span className="text-2xl font-serif font-bold text-foreground">{Math.floor((daysTogether || 0) / 365)}</span>
+          <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Years</span>
+        </motion.div>
+        <motion.div 
+          whileHover={{ scale: 1.05, y: -2 }}
+          className="bg-gradient-to-br from-white to-accent/5 dark:from-slate-800 dark:to-accent/10 p-5 rounded-2xl shadow-lg border border-accent/20 dark:border-accent/30 flex flex-col items-center gap-2 backdrop-blur-sm transition-all"
+        >
+          <Heart className="text-primary dark:text-primary fill-primary/30 dark:fill-primary/40" size={24} />
+          <span className="text-2xl font-serif font-bold text-foreground">{Math.floor(((daysTogether || 0) % 365) / 30)}</span>
+          <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Months</span>
+        </motion.div>
       </div>
     </div>
   );

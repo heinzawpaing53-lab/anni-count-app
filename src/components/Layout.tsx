@@ -12,8 +12,8 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center selection:bg-primary/10">
-      <main className="w-full max-w-md md:max-w-lg flex-1 pb-24 relative overflow-hidden bg-white/30 md:shadow-2xl md:my-4 md:rounded-[3rem] md:border md:border-primary/5">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex flex-col items-center selection:bg-primary/10 dark:bg-gradient-to-br dark:from-background dark:to-primary/10">
+      <main className="w-full max-w-md md:max-w-lg flex-1 pb-24 relative overflow-hidden bg-white/50 dark:bg-slate-900/40 md:shadow-2xl md:my-4 md:rounded-[3rem] md:border md:border-primary/20 dark:md:border-primary/30 backdrop-blur-sm">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

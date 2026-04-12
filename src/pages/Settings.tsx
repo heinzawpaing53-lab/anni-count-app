@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { getSetting, setSetting, db } from "@/src/db";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format, parseISO } from "date-fns";
-import { CalendarIcon, Heart, Trash2, AlertCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Heart, Trash2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -65,43 +63,43 @@ export function Settings() {
       </header>
 
       <div className="space-y-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-border space-y-4">
+        <div className="bg-gradient-to-br from-white to-primary/5 p-6 rounded-2xl shadow-lg border-2 border-primary/20 space-y-6">
           <div className="flex items-center gap-3 text-primary">
-            <Heart size={20} />
+            <Heart size={20} className="fill-primary" />
             <h2 className="text-lg font-serif font-semibold">Relationship Details</h2>
           </div>
           
-          <div className="space-y-2">
-            <Label className="text-xs uppercase tracking-widest font-bold text-primary/70">Start Date</Label>
-            <Popover>
-              <PopoverTrigger
-                className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "w-full justify-start text-left font-normal bg-white border-primary/10 rounded-xl h-12",
-                  !startDate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4 text-primary/60" />
-                {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={startDate}
-                  onSelect={handleSaveDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            <p className="text-[10px] text-muted-foreground italic">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-widest font-bold text-primary/70 block">Select Start Date</Label>
+              {startDate && (
+                <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                  <p className="text-sm font-serif font-semibold text-primary">
+                    💕 {format(startDate, "MMMM do, yyyy")}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex justify-center bg-white p-6 rounded-xl border border-primary/10 shadow-sm">
+              <Calendar
+                mode="single"
+                selected={startDate}
+                onSelect={handleSaveDate}
+                showOutsideDays={false}
+                className="[&_button]:rounded-lg [&_button]:border-primary/10"
+              />
+            </div>
+            
+            <p className="text-[10px] text-muted-foreground italic text-center">
               This date is used to calculate how many days you've been together.
             </p>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-border space-y-4">
+        <div className="bg-gradient-to-br from-red-50/50 to-destructive/5 p-6 rounded-2xl shadow-lg border-2 border-destructive/20 space-y-4">
           <div className="flex items-center gap-3 text-destructive">
-            <AlertCircle size={20} />
+            <AlertCircle size={20} className="fill-destructive/20" />
             <h2 className="text-lg font-serif font-semibold">Danger Zone</h2>
           </div>
           
