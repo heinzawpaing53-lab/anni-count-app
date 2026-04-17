@@ -21,11 +21,15 @@ import {
 export function Settings() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [isSaving, setIsSaving] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(true);
 
   useEffect(() => {
     async function load() {
       const date = await getSetting("startDate");
-      if (date) setStartDate(parseISO(date));
+      if (date) {
+        setStartDate(parseISO(date));
+        setShowCalendar(false);
+      }
     }
     load();
   }, []);
@@ -36,6 +40,7 @@ export function Settings() {
     setIsSaving(true);
     try {
       await setSetting("startDate", date.toISOString());
+      setShowCalendar(false);
       toast.success("Relationship start date updated!");
     } catch (error) {
       toast.error("Failed to update date.");
@@ -56,66 +61,82 @@ export function Settings() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-full space-y-8">
       <header className="space-y-1">
         <h1 className="text-3xl font-serif font-semibold text-primary tracking-tight">Settings</h1>
         <p className="text-muted-foreground italic font-serif">Personalize your experience.</p>
       </header>
 
       <div className="space-y-6">
-        <div className="bg-gradient-to-br from-white to-primary/5 p-6 rounded-2xl shadow-lg border-2 border-primary/20 space-y-6">
+        <div className="romantic-surface space-y-6 border border-primary/14 bg-[#EAF3FF] p-7">
           <div className="flex items-center gap-3 text-primary">
             <Heart size={20} className="fill-primary" />
             <h2 className="text-lg font-serif font-semibold">Relationship Details</h2>
           </div>
-          
+
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-xs uppercase tracking-widest font-bold text-primary/70 block">Select Start Date</Label>
+              <Label className="block text-xs font-bold uppercase tracking-widest text-primary/70">
+                Select Start Date
+              </Label>
               {startDate && (
-                <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                <div className="rounded-[20px] border border-primary/16 bg-primary/8 p-4">
                   <p className="text-sm font-serif font-semibold text-primary">
-                    💕 {format(startDate, "MMMM do, yyyy")}
+                    Love day: {format(startDate, "MMMM do, yyyy")}
                   </p>
                 </div>
               )}
             </div>
-            
-            <div className="flex justify-center bg-white p-6 rounded-xl border border-primary/10 shadow-sm">
-              <Calendar
-                mode="single"
-                selected={startDate}
-                onSelect={handleSaveDate}
-                showOutsideDays={false}
-                className="[&_button]:rounded-lg [&_button]:border-primary/10"
-              />
-            </div>
-            
-            <p className="text-[10px] text-muted-foreground italic text-center">
+
+            {showCalendar ? (
+              <div className="romantic-surface flex justify-center border border-primary/10 bg-[#FDFEFF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.08)]">
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={handleSaveDate}
+                  showOutsideDays={false}
+                  className="[&_button]:rounded-lg [&_button]:border-primary/10"
+                />
+              </div>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full rounded-[20px] border-primary/20 font-serif"
+                onClick={() => setShowCalendar(true)}
+                disabled={isSaving}
+              >
+                Change Start Date
+              </Button>
+            )}
+
+            <p className="text-center text-[10px] italic text-muted-foreground">
               This date is used to calculate how many days you've been together.
             </p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-red-50/50 to-destructive/5 p-6 rounded-2xl shadow-lg border-2 border-destructive/20 space-y-4">
+        <div className="romantic-surface space-y-4 border border-primary/14 bg-[#EAF3FF] p-7">
           <div className="flex items-center gap-3 text-destructive">
             <AlertCircle size={20} className="fill-destructive/20" />
             <h2 className="text-lg font-serif font-semibold">Danger Zone</h2>
           </div>
-          
-          <p className="text-sm text-muted-foreground italic">
+
+          <p className="text-sm italic text-muted-foreground">
             Once you delete your data, there is no going back. Please be certain.
           </p>
 
           <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button 
-                variant="destructive" 
-                className="w-full rounded-xl h-12 font-serif"
-              >
-                <Trash2 className="mr-2" size={18} />
-                Clear All Data
-              </Button>
+            <AlertDialogTrigger
+              render={
+                <Button
+                  variant="destructive"
+                  className="h-12 w-full rounded-[20px] font-serif"
+                />
+              }
+            >
+              <Trash2 className="mr-2" size={18} />
+              Clear All Data
             </AlertDialogTrigger>
             <AlertDialogContent className="rounded-3xl border-primary/10">
               <AlertDialogHeader>
@@ -128,7 +149,7 @@ export function Settings() {
                 <AlertDialogCancel className="rounded-xl font-serif">Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={clearAllData}
-                  className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 font-serif"
+                  className="rounded-xl bg-destructive text-destructive-foreground font-serif hover:bg-destructive/90"
                 >
                   Clear Everything
                 </AlertDialogAction>
@@ -137,11 +158,11 @@ export function Settings() {
           </AlertDialog>
         </div>
 
-        <div className="text-center pt-8">
-          <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary/30">
+        <div className="pt-8 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/30">
             Everlasting v1.0
           </p>
-          <p className="text-[10px] text-primary/20 italic mt-1">
+          <p className="mt-1 text-[10px] italic text-primary/20">
             Made with love for you.
           </p>
         </div>

@@ -12,22 +12,24 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex flex-col items-center selection:bg-primary/10 dark:bg-gradient-to-br dark:from-background dark:to-primary/10">
-      <main className="w-full max-w-md md:max-w-lg flex-1 pb-24 relative overflow-hidden bg-white/50 dark:bg-slate-900/40 md:shadow-2xl md:my-4 md:rounded-[3rem] md:border md:border-primary/20 dark:md:border-primary/30 backdrop-blur-sm">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="p-6"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
-      </main>
-      <Navigation />
+    <div className="flex min-h-screen flex-col items-center bg-background selection:bg-primary/10">
+      <div className="flex min-h-screen w-full max-w-md flex-1 flex-col bg-[#EAF3FF] backdrop-blur-sm md:my-4 md:min-h-[calc(100vh-2rem)] md:max-w-lg md:overflow-hidden md:rounded-[2rem] md:border md:border-primary/15 md:shadow-[0_10px_30px_rgba(31,42,68,0.08)]">
+        <main className="flex-1 overflow-y-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="min-h-full p-7 md:p-8"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+        <Navigation />
+      </div>
       <Toaster position="top-center" />
     </div>
   );
