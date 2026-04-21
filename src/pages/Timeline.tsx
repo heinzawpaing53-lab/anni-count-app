@@ -1,6 +1,4 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/src/db";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import {
   Calendar as CalendarIcon,
   Heart,
@@ -21,7 +19,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { createMemory, deleteMemory, getMemories, type MemoryRecord } from "@/src/lib/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,13 +34,26 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export function Timeline() {
-  const memories = useLiveQuery(() => db.memories.orderBy("date").reverse().toArray());
+  const [memories, setMemories] = useState<MemoryRecord[] | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  const loadMemories = async () => {
+    try {
+      const response = await getMemories();
+      setMemories(response.memories);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to load memories.");
+    }
+  };
+
+  useEffect(() => {
+    void loadMemories();
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -60,13 +72,14 @@ export function Timeline() {
 
     setIsSaving(true);
     try {
-      await db.memories.add({
+      const response = await createMemory({
         title,
         description,
-        date,
+        date: date.toISOString(),
         image: image || undefined,
-        createdAt: new Date(),
       });
+
+      setMemories((current) => [response.memory, ...(current ?? [])]);
       toast.success("Memory saved to your timeline!");
       setTitle("");
       setDescription("");
@@ -75,26 +88,26 @@ export function Timeline() {
       setShowForm(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
-      console.error("Failed to save memory:", error);
-      toast.error("Failed to save memory. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to save memory.");
     } finally {
       setIsSaving(false);
     }
   };
 
-  const deleteMemory = async (id: number) => {
+  const handleDeleteMemory = async (id: string) => {
     try {
-      await db.memories.delete(id);
+      await deleteMemory(id);
+      setMemories((current) => (current ?? []).filter((memory) => memory.id !== id));
       toast.success("Memory removed.");
     } catch (error) {
-      toast.error("Failed to delete memory.");
+      toast.error(error instanceof Error ? error.message : "Failed to delete memory.");
     }
   };
 
   if (!memories) {
     return (
       <div className="flex min-h-full flex-col items-center justify-center gap-4 p-6 text-center">
-        <div className="rounded-full bg-primary/5 p-6">
+        <div className="rounded-full bg-[#F1F7FF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.12)]">
           <CalendarIcon size={48} className="text-primary/40" />
         </div>
         <h2 className="text-2xl font-serif font-medium text-primary">Loading...</h2>
@@ -215,7 +228,7 @@ export function Timeline() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="flex-1 rounded-[20px] border-primary/20"
+                  className="flex-1 rounded-[20px] border-primary/20 font-serif text-base font-black tracking-[0.06em] text-[#111111]"
                   onClick={() => {
                     setShowForm(false);
                     setTitle("");
@@ -227,15 +240,19 @@ export function Timeline() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 rounded-[20px] bg-primary font-serif text-white hover:bg-primary/90"
+                  className="flex-1 rounded-[20px] bg-primary px-5 py-3 font-serif text-base font-black tracking-[0.08em] text-[#111111] shadow-[0_14px_28px_rgba(91,141,239,0.3)] transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_18px_34px_rgba(91,141,239,0.34)] disabled:translate-y-0 disabled:bg-primary/70 disabled:text-[#111111] disabled:opacity-100"
                   disabled={isSaving}
                 >
                   {isSaving ? (
-                    <Loader2 className="mr-2 animate-spin" size={18} />
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/25">
+                      <Loader2 className="animate-spin" size={18} strokeWidth={2.5} />
+                    </span>
                   ) : (
-                    <Sparkles className="mr-2" size={18} />
+                    <span className="mr-2 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/25">
+                      <Sparkles size={18} strokeWidth={2.5} />
+                    </span>
                   )}
-                  Save
+                  Save Memory
                 </Button>
               </div>
             </form>
@@ -320,7 +337,7 @@ export function Timeline() {
                         <AlertDialogFooter>
                           <AlertDialogCancel className="rounded-xl font-serif">Cancel</AlertDialogCancel>
                           <AlertDialogAction
-                            onClick={() => deleteMemory(memory.id!)}
+                            onClick={() => handleDeleteMemory(memory.id)}
                             className="rounded-xl bg-destructive text-destructive-foreground font-serif hover:bg-destructive/90"
                           >
                             Delete
@@ -330,7 +347,7 @@ export function Timeline() {
                     </AlertDialog>
                   </div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-primary/60">
-                    {format(memory.date, "MMMM do, yyyy")}
+                    {format(parseISO(memory.date), "MMMM do, yyyy")}
                   </p>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
