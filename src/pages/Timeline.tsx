@@ -55,14 +55,56 @@ export function Timeline() {
     void loadMemories();
   }, []);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  const compressImage = (file: File) =>
+    new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read image."));
+      reader.onload = () => {
+        const source = new Image();
+        source.onerror = () => reject(new Error("Failed to process image."));
+        source.onload = () => {
+          const maxSize = 1400;
+          const scale = Math.min(maxSize / source.width, maxSize / source.height, 1);
+          const width = Math.max(1, Math.round(source.width * scale));
+          const height = Math.max(1, Math.round(source.height * scale));
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const context = canvas.getContext("2d");
+
+          if (!context) {
+            reject(new Error("Image processing is unavailable."));
+            return;
+          }
+
+          context.drawImage(source, 0, 0, width, height);
+          let quality = 0.82;
+          let result = canvas.toDataURL("image/jpeg", quality);
+
+          while (result.length > 1_500_000 && quality > 0.45) {
+            quality -= 0.08;
+            result = canvas.toDataURL("image/jpeg", quality);
+          }
+
+          resolve(result);
+        };
+        source.src = String(reader.result);
       };
       reader.readAsDataURL(file);
+    });
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const compressedImage = await compressImage(file);
+      setImage(compressedImage);
+      toast.success("Photo added.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to add photo.");
+    } finally {
+      e.target.value = "";
     }
   };
 
@@ -312,7 +354,7 @@ export function Timeline() {
                 )}
                 <CardHeader className="p-4 pb-2">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-xl font-serif font-semibold text-primary">
+                    <CardTitle className="text-xl font-serif font-black tracking-[0.02em] text-primary">
                       {memory.title}
                     </CardTitle>
                     <AlertDialog>
@@ -327,18 +369,25 @@ export function Timeline() {
                       >
                         <Trash2 size={16} />
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="rounded-3xl border-primary/10">
+                      <AlertDialogContent className="rounded-3xl border-2 border-[#E7BCC7] bg-[#FFF7F8] shadow-[0_24px_60px_rgba(214,118,141,0.16)]">
                         <AlertDialogHeader>
-                          <AlertDialogTitle className="font-serif">Delete Memory?</AlertDialogTitle>
-                          <AlertDialogDescription className="italic font-serif">
+                          <div className="mb-2 inline-flex w-fit rounded-full bg-[#F9DDE5] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#B66278]">
+                            Warning
+                          </div>
+                          <AlertDialogTitle className="font-serif text-2xl text-[#A6566B]">
+                            Delete Memory?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription className="rounded-[20px] border border-[#E9C7D0] bg-white/85 p-4 text-left italic font-serif text-[#875C68]">
                             This beautiful moment will be removed from your timeline.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="rounded-xl font-serif">Cancel</AlertDialogCancel>
+                          <AlertDialogCancel className="rounded-xl border-[#DFC0C8] font-serif font-semibold text-[#1F2A44]">
+                            Cancel
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDeleteMemory(memory.id)}
-                            className="rounded-xl bg-destructive text-destructive-foreground font-serif hover:bg-destructive/90"
+                            className="rounded-xl border border-[#D89CAC] bg-[#EFB6C3] px-5 font-serif text-base font-black tracking-[0.04em] text-[#6A2F40] shadow-[0_12px_24px_rgba(214,118,141,0.16)] hover:bg-[#E9A8B8]"
                           >
                             Delete
                           </AlertDialogAction>

@@ -25,6 +25,9 @@ export function Settings() {
   const [startDate, setStartDate] = useState<Date | undefined>(
     user?.anniversaryDate ? parseISO(user.anniversaryDate) : undefined
   );
+  const [draftDate, setDraftDate] = useState<Date | undefined>(
+    user?.anniversaryDate ? parseISO(user.anniversaryDate) : undefined
+  );
   const [name, setName] = useState(user?.name ?? "");
   const [partnerName, setPartnerName] = useState(user?.partnerName ?? "");
   const [isSaving, setIsSaving] = useState(false);
@@ -34,14 +37,15 @@ export function Settings() {
     setName(user?.name ?? "");
     setPartnerName(user?.partnerName ?? "");
     setStartDate(user?.anniversaryDate ? parseISO(user.anniversaryDate) : undefined);
+    setDraftDate(user?.anniversaryDate ? parseISO(user.anniversaryDate) : undefined);
   }, [user]);
 
-  const handleSaveDate = async (date: Date | undefined) => {
-    if (!date) return;
-    setStartDate(date);
+  const handleSaveDate = async () => {
+    if (!draftDate) return;
     setIsSaving(true);
     try {
-      await updateProfile({ anniversaryDate: date.toISOString() });
+      await updateProfile({ anniversaryDate: draftDate.toISOString() });
+      setStartDate(draftDate);
       setShowCalendar(false);
       toast.success("Anniversary date updated.");
     } catch (error) {
@@ -77,6 +81,11 @@ export function Settings() {
   const handleLogout = async () => {
     await logout();
     toast.success("Logged out.");
+  };
+
+  const handleCancelDateChange = () => {
+    setDraftDate(startDate);
+    setShowCalendar(false);
   };
 
   return (
@@ -149,21 +158,45 @@ export function Settings() {
             )}
 
             {showCalendar ? (
-              <div className="romantic-surface flex justify-center border border-primary/10 bg-[#FDFEFF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.08)]">
-                <Calendar
-                  mode="single"
-                  selected={startDate}
-                  onSelect={handleSaveDate}
-                  showOutsideDays={false}
-                  className="[&_button]:rounded-lg [&_button]:border-primary/10"
-                />
+              <div className="romantic-surface space-y-5 border border-primary/10 bg-[#FDFEFF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.08)]">
+                <div className="flex justify-center">
+                  <Calendar
+                    mode="single"
+                    selected={draftDate}
+                    onSelect={setDraftDate}
+                    showOutsideDays={false}
+                    className="[&_button]:rounded-lg [&_button]:border-primary/10"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 rounded-[20px] border-primary/20 font-serif font-semibold"
+                    onClick={handleCancelDateChange}
+                    disabled={isSaving}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    className="flex-1 rounded-[20px] bg-primary font-serif font-bold text-white hover:bg-primary/90"
+                    onClick={handleSaveDate}
+                    disabled={!draftDate || isSaving}
+                  >
+                    Change Date
+                  </Button>
+                </div>
               </div>
             ) : (
               <Button
                 type="button"
                 variant="outline"
                 className="w-full rounded-[20px] border-primary/20 font-serif"
-                onClick={() => setShowCalendar(true)}
+                onClick={() => {
+                  setDraftDate(startDate);
+                  setShowCalendar(true);
+                }}
                 disabled={isSaving}
               >
                 Change Anniversary Date

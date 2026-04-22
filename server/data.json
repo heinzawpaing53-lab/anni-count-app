@@ -1,5 +1,36 @@
 {
-  "users": [],
-  "sessions": [],
-  "memories": []
+  "users": [
+    {
+      "id": "9affc30b-99e1-48a3-8325-38001264c6d4",
+      "email": "heinzawpaing40@gmail.com",
+      "passwordHash": "fbbeec737318e8837644f7389d75502972722e3bc093459fc18047b7aea0bb9e3b5b1f2603921030aef916979cf43a0e4400080698334f8414e96a521191ec20",
+      "salt": "1bbee2e1628652355479a51d57b50e65",
+      "name": "Hein Zaw Paing",
+      "partnerName": "Pa Pa Khaing",
+      "anniversaryDate": "2025-02-15T17:30:00.000Z",
+      "createdAt": "2026-04-21T04:28:52.497Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "1d80489c61a7924571ddacd63d45951262ef14abf203afd3ac30274db05c4e05",
+      "userId": "9affc30b-99e1-48a3-8325-38001264c6d4",
+      "createdAt": "2026-04-21T04:28:52.497Z"
+    },
+    {
+      "token": "22368dca8a729d265edb44251eb0ccae050b77fbbdc794465c305321ea797213",
+      "userId": "9affc30b-99e1-48a3-8325-38001264c6d4",
+      "createdAt": "2026-04-21T04:28:59.372Z"
+    }
+  ],
+  "memories": [
+    {
+      "id": "09e790ab-0c31-41be-95c5-8aa74ad80910",
+      "userId": "9affc30b-99e1-48a3-8325-38001264c6d4",
+      "title": "missing her",
+      "description": "i miss her so much and want to see her",
+      "date": "2026-04-21T04:29:05.321Z",
+      "createdAt": "2026-04-21T04:29:33.464Z"
+    }
+  ]
 }
