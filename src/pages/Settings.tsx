@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { format, parseISO } from "date-fns";
-import { Heart, Trash2, AlertCircle, LogOut, UserRound, Users } from "lucide-react";
+import { Heart, Trash2, AlertCircle, LogOut, UserRound, Users, Moon, Sun } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteAccount } from "@/src/lib/api";
 import { useAuth } from "@/src/context/AuthContext";
+import { ThemeToggle } from "@/src/components/ThemeToggle";
 
 export function Settings() {
   const { user, updateProfile, logout } = useAuth();
@@ -96,12 +97,25 @@ export function Settings() {
       </header>
 
       <div className="space-y-6">
+        <div className="romantic-surface space-y-5 border border-primary/14 bg-card/90 p-7 dark:bg-[#111827]">
+          <div className="flex items-center gap-3 text-primary">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/12">
+              <Sun size={18} className="dark:hidden" />
+              <Moon size={18} className="hidden dark:block" />
+            </div>
+            <div>
+              <h2 className="text-lg font-serif font-semibold">Appearance</h2>
+            </div>
+          </div>
+          <ThemeToggle />
+        </div>
+
         <form
           onSubmit={handleSaveNames}
-          className="romantic-surface space-y-6 border border-primary/14 bg-[#EAF3FF] p-7"
+          className="romantic-surface space-y-6 border border-primary/14 bg-card/90 p-7 dark:bg-[#111827]"
         >
           <div className="flex items-center gap-3 text-primary">
-            <Heart size={20} className="fill-primary" />
+            <Heart size={20} className="fill-[#FF4D6D] text-[#FF4D6D]" />
             <h2 className="text-lg font-serif font-semibold">Relationship Details</h2>
           </div>
 
@@ -115,7 +129,7 @@ export function Settings() {
                 <Input
                   value={name}
                   onChange={(event) => setName(event.target.value)}
-                  className="h-11 rounded-[20px] border-primary/10 bg-[#FDFEFF] pl-10"
+                  className="h-11 rounded-[20px] border-primary/10 bg-white/90 pl-10 dark:bg-[#0F1726]"
                 />
               </div>
             </div>
@@ -128,7 +142,7 @@ export function Settings() {
                 <Input
                   value={partnerName}
                   onChange={(event) => setPartnerName(event.target.value)}
-                  className="h-11 rounded-[20px] border-primary/10 bg-[#FDFEFF] pl-10"
+                  className="h-11 rounded-[20px] border-primary/10 bg-white/90 pl-10 dark:bg-[#0F1726]"
                 />
               </div>
             </div>
@@ -142,15 +156,15 @@ export function Settings() {
           </div>
         </form>
 
-        <div className="romantic-surface space-y-6 border border-primary/14 bg-[#EAF3FF] p-7">
+        <div className="romantic-surface space-y-6 border border-primary/14 bg-card/90 p-7 dark:bg-[#111827]">
           <div className="flex items-center gap-3 text-primary">
-            <Heart size={20} className="fill-primary" />
+            <Heart size={20} className="fill-[#FF4D6D] text-[#FF4D6D]" />
             <h2 className="text-lg font-serif font-semibold">Anniversary Date</h2>
           </div>
 
           <div className="space-y-4">
             {startDate && (
-              <div className="rounded-[20px] border border-primary/16 bg-[#FDFEFF] p-4">
+              <div className="rounded-[20px] border border-primary/16 bg-white/90 p-4 dark:bg-[#0F1726]">
                 <p className="text-sm font-serif font-semibold text-primary">
                   Anniversary: {format(startDate, "MMMM do, yyyy")}
                 </p>
@@ -158,7 +172,7 @@ export function Settings() {
             )}
 
             {showCalendar ? (
-              <div className="romantic-surface space-y-5 border border-primary/10 bg-[#FDFEFF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.08)]">
+              <div className="romantic-surface space-y-5 border border-primary/10 bg-white/90 p-6 shadow-[0_10px_24px_rgba(126,200,227,0.12)] dark:bg-[#0F1726]">
                 <div className="flex justify-center">
                   <Calendar
                     mode="single"
@@ -180,7 +194,7 @@ export function Settings() {
                   </Button>
                   <Button
                     type="button"
-                    className="flex-1 rounded-[20px] bg-primary font-serif font-bold text-white hover:bg-primary/90"
+                    className="flex-1 rounded-[20px] bg-primary font-serif font-bold text-white hover:bg-primary/90 dark:text-[#0B1220]"
                     onClick={handleSaveDate}
                     disabled={!draftDate || isSaving}
                   >
@@ -205,7 +219,7 @@ export function Settings() {
           </div>
         </div>
 
-        <div className="romantic-surface space-y-4 border border-primary/14 bg-[#EAF3FF] p-7">
+        <div className="romantic-surface space-y-4 border border-primary/14 bg-card/90 p-7 dark:bg-[#111827]">
           <div className="flex items-center gap-3 text-primary">
             <LogOut size={20} />
             <h2 className="text-lg font-serif font-semibold">Account</h2>
@@ -226,15 +240,15 @@ export function Settings() {
           </Button>
         </div>
 
-        <div className="romantic-surface space-y-4 border border-[#E7BCC7] bg-[#FFF4F7] p-7 shadow-[0_14px_28px_rgba(214,118,141,0.1)]">
-          <div className="flex items-center gap-3 text-[#B66278]">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F9DDE5]">
-              <AlertCircle size={20} className="fill-[#E7A8B8] text-[#C97890]" />
+        <div className="romantic-surface space-y-4 border border-[#D6EFFF] bg-[#F2FAFF] p-7 shadow-[0_14px_28px_rgba(126,200,227,0.12)] dark:border-[#1F2A44] dark:bg-[#0F1726] dark:shadow-[0_18px_36px_rgba(0,0,0,0.28)]">
+          <div className="flex items-center gap-3 text-[#4F7F95] dark:text-[#BFE9FF]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#DFF4FF] dark:bg-[#162033]">
+              <AlertCircle size={20} className="fill-[#BFE9FF] text-[#7EC8E3] dark:fill-[#7EC8E3]/35 dark:text-[#BFE9FF]" />
             </div>
-            <h2 className="text-lg font-serif font-semibold text-[#A6566B]">Danger Zone</h2>
+            <h2 className="text-lg font-serif font-semibold text-[#3E677A] dark:text-[#D6F0FF]">Danger Zone</h2>
           </div>
 
-          <p className="text-sm italic text-[#8A5D69]">
+          <p className="text-sm italic text-[#5B7387] dark:text-[#C3D4EA]">
             This will permanently delete your account and all synced memories.
           </p>
 
@@ -243,32 +257,32 @@ export function Settings() {
               render={
                 <Button
                   variant="destructive"
-                  className="h-12 w-full rounded-[20px] border border-[#D89CAC] bg-[#EFB6C3] font-serif font-bold text-[#6A2F40] shadow-[0_12px_24px_rgba(214,118,141,0.14)] hover:bg-[#E9A8B8]"
+                  className="h-12 w-full rounded-[20px] border border-[#B8DEEF] bg-[#DFF4FF] font-serif font-bold text-[#32576A] shadow-[0_12px_24px_rgba(126,200,227,0.16)] hover:bg-[#D1EEFF] dark:border-[#2A4269] dark:bg-[#18314A] dark:text-[#DFF4FF] dark:hover:bg-[#214163]"
                 />
               }
             >
               <Trash2 className="mr-2" size={18} />
               Delete Account
             </AlertDialogTrigger>
-            <AlertDialogContent className="rounded-3xl border-2 border-[#E7BCC7] bg-[#FFF7F8] shadow-[0_24px_60px_rgba(214,118,141,0.16)]">
+            <AlertDialogContent className="rounded-3xl border-2 border-[#D6EFFF] bg-[#F6FCFF] shadow-[0_24px_60px_rgba(126,200,227,0.16)] dark:border-[#1F2A44] dark:bg-[#0F1726] dark:shadow-[0_28px_60px_rgba(0,0,0,0.38)]">
               <AlertDialogHeader>
-                <div className="mb-2 inline-flex w-fit rounded-full bg-[#F9DDE5] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#B66278]">
+                <div className="mb-2 inline-flex w-fit rounded-full bg-[#DFF4FF] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#4F7F95] dark:bg-[#162033] dark:text-[#BFE9FF]">
                   Final Warning
                 </div>
-                <AlertDialogTitle className="font-serif text-2xl text-[#A6566B]">
+                <AlertDialogTitle className="font-serif text-2xl text-[#3E677A] dark:text-[#D6F0FF]">
                   Delete Account?
                 </AlertDialogTitle>
-                <AlertDialogDescription className="rounded-[20px] border border-[#E9C7D0] bg-white/85 p-4 text-left italic font-serif text-[#875C68]">
+                <AlertDialogDescription className="rounded-[20px] border border-[#D6EFFF] bg-white/90 p-4 text-left italic font-serif text-[#5B7387] dark:border-[#1F2A44] dark:bg-[#111827] dark:text-[#C3D4EA]">
                   This will delete your account, your anniversary setup, and your memories on every device.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel className="rounded-xl border-[#DFC0C8] font-serif font-semibold text-[#1F2A44]">
+                <AlertDialogCancel className="rounded-xl border-[#D6EFFF] font-serif font-semibold text-[#1F2937] dark:border-[#1F2A44] dark:text-[#E5E7EB]">
                   Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDeleteAccount}
-                  className="rounded-xl border border-[#D89CAC] bg-[#EFB6C3] px-5 text-base font-black tracking-[0.04em] text-[#6A2F40] shadow-[0_12px_24px_rgba(214,118,141,0.16)] hover:bg-[#E9A8B8]"
+                  className="rounded-xl border border-[#B8DEEF] bg-[#DFF4FF] px-5 text-base font-black tracking-[0.04em] text-[#32576A] shadow-[0_12px_24px_rgba(126,200,227,0.16)] hover:bg-[#D1EEFF] dark:border-[#2A4269] dark:bg-[#18314A] dark:text-[#DFF4FF] dark:hover:bg-[#214163]"
                 >
                   Delete Everything
                 </AlertDialogAction>

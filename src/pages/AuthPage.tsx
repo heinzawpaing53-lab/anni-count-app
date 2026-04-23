@@ -83,9 +83,9 @@ export function AuthPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-5 py-10">
-      <div className="romantic-surface w-full max-w-md border border-primary/10 bg-[#F7FBFF] p-7">
+      <div className="romantic-surface w-full max-w-md border border-primary/10 bg-card/90 p-7 ring-1 ring-white/60 dark:border-[#1F2A44] dark:bg-[#111827]/92 dark:ring-white/6">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(135deg,#5B8DEF,#AFCBFF)] text-white shadow-[0_14px_30px_rgba(91,141,239,0.25)]">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(135deg,#7EC8E3,#BFE9FF)] text-white shadow-[0_14px_30px_rgba(126,200,227,0.28)]">
             <Heart className="fill-white/35 text-white" size={28} />
           </div>
           <h1 className="font-serif text-4xl font-semibold text-primary">
@@ -108,7 +108,7 @@ export function AuthPage() {
                   onChange={(event) =>
                     setLoginForm((current) => ({ ...current, email: event.target.value }))
                   }
-                  className="h-11 rounded-[20px] bg-white pl-10"
+                  className="h-11 rounded-[20px] bg-white/90 pl-10 dark:bg-[#0F1726]"
                   placeholder="Enter your email"
                   required
                 />
@@ -124,7 +124,7 @@ export function AuthPage() {
                   onChange={(event) =>
                     setLoginForm((current) => ({ ...current, password: event.target.value }))
                   }
-                  className="h-11 rounded-[20px] bg-white pl-10"
+                  className="h-11 rounded-[20px] bg-white/90 pl-10 dark:bg-[#0F1726]"
                   placeholder="Enter your password"
                   required
                 />
@@ -132,7 +132,7 @@ export function AuthPage() {
             </div>
             <Button
               type="submit"
-              className="h-12 w-full rounded-[20px] bg-primary font-serif text-base font-black tracking-[0.08em] !text-[#1F2A44] shadow-[0_12px_24px_rgba(91,141,239,0.22)] hover:bg-primary/90 disabled:!bg-[#BFD4FB] disabled:!text-[#1F2A44] disabled:!opacity-100"
+              className="h-12 w-full rounded-[20px] bg-primary font-serif text-base font-black tracking-[0.08em] text-white shadow-[0_12px_24px_rgba(126,200,227,0.24)] hover:bg-primary/90 disabled:bg-primary/70 disabled:text-white disabled:opacity-100 dark:text-[#0B1220]"
               disabled={submitting}
             >
               Login
@@ -149,7 +149,7 @@ export function AuthPage() {
                   onChange={(event) =>
                     setRegisterForm((current) => ({ ...current, name: event.target.value }))
                   }
-                  className="h-11 rounded-[20px] bg-white pl-10"
+                  className="h-11 rounded-[20px] bg-white/90 pl-10 dark:bg-[#0F1726]"
                   placeholder="Your name"
                   required
                 />
@@ -169,7 +169,7 @@ export function AuthPage() {
                       partnerName: event.target.value,
                     }))
                   }
-                  className="h-11 rounded-[20px] bg-white pl-10"
+                  className="h-11 rounded-[20px] bg-white/90 pl-10 dark:bg-[#0F1726]"
                   placeholder="Partner's name"
                   required
                 />
@@ -183,7 +183,7 @@ export function AuthPage() {
                 <PopoverTrigger
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "h-11 w-full justify-start rounded-[20px] bg-white text-left font-normal"
+                    "h-11 w-full justify-start rounded-[20px] bg-white/90 text-left font-normal dark:bg-[#0F1726]"
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4 text-primary/60" />
@@ -194,7 +194,7 @@ export function AuthPage() {
                   )}
                 </PopoverTrigger>
                 <PopoverContent
-                  className="w-auto rounded-[24px] border border-primary/20 bg-[#FDFEFF] p-3 shadow-[0_24px_60px_rgba(31,42,68,0.18)] ring-1 ring-primary/10"
+                  className="w-auto rounded-[24px] border border-primary/20 bg-card p-3 shadow-[0_24px_60px_rgba(84,126,160,0.18)] ring-1 ring-primary/10 dark:bg-[#111827]"
                   align="start"
                 >
                   <Calendar
@@ -227,7 +227,7 @@ export function AuthPage() {
                   onChange={(event) =>
                     setRegisterForm((current) => ({ ...current, email: event.target.value }))
                   }
-                  className="h-11 rounded-[20px] bg-white pl-10"
+                  className="h-11 rounded-[20px] bg-white/90 pl-10 dark:bg-[#0F1726]"
                   placeholder="Enter your email"
                   required
                 />
@@ -241,7 +241,7 @@ export function AuthPage() {
                 onChange={(event) =>
                   setRegisterForm((current) => ({ ...current, password: event.target.value }))
                 }
-                className="h-11 rounded-[20px] bg-white"
+                className="h-11 rounded-[20px] bg-white/90 dark:bg-[#0F1726]"
                 placeholder="Enter your password"
                 required
               />
@@ -259,14 +259,14 @@ export function AuthPage() {
                     confirmPassword: event.target.value,
                   }))
                 }
-                className="h-11 rounded-[20px] bg-white"
+                className="h-11 rounded-[20px] bg-white/90 dark:bg-[#0F1726]"
                 placeholder="Repeat password"
                 required
               />
             </div>
             <Button
               type="submit"
-              className="h-12 w-full rounded-[20px] bg-primary font-serif text-base font-black tracking-[0.08em] !text-[#1F2A44] shadow-[0_12px_24px_rgba(91,141,239,0.22)] hover:bg-primary/90 disabled:!bg-[#BFD4FB] disabled:!text-[#1F2A44] disabled:!opacity-100"
+              className="h-12 w-full rounded-[20px] bg-primary font-serif text-base font-black tracking-[0.08em] text-white shadow-[0_12px_24px_rgba(126,200,227,0.24)] hover:bg-primary/90 disabled:bg-primary/70 disabled:text-white disabled:opacity-100 dark:text-[#0B1220]"
               disabled={submitting}
             >
               Register

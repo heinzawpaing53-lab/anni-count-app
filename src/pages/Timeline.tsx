@@ -149,7 +149,7 @@ export function Timeline() {
   if (!memories) {
     return (
       <div className="flex min-h-full flex-col items-center justify-center gap-4 p-6 text-center">
-        <div className="rounded-full bg-[#F1F7FF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.12)]">
+        <div className="rounded-full bg-card p-6 shadow-[0_10px_24px_rgba(126,200,227,0.12)] dark:bg-[#111827]">
           <CalendarIcon size={48} className="text-primary/40" />
         </div>
         <h2 className="text-2xl font-serif font-medium text-primary">Loading...</h2>
@@ -170,7 +170,7 @@ export function Timeline() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="romantic-surface space-y-5 border border-primary/14 bg-[#EAF3FF] p-7"
+            className="romantic-surface space-y-5 border border-primary/14 bg-card/90 p-7 dark:bg-[#111827]"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-serif font-semibold text-primary">Create New Memory</h3>
@@ -194,7 +194,7 @@ export function Timeline() {
                   placeholder="What happened today?"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="rounded-[20px] border-primary/10 bg-[#FDFEFF] font-serif"
+                  className="rounded-[20px] border-primary/10 bg-white/90 font-serif dark:bg-[#0F1726]"
                   required
                 />
               </div>
@@ -205,14 +205,14 @@ export function Timeline() {
                   <PopoverTrigger
                     className={cn(
                       buttonVariants({ variant: "outline" }),
-                      "h-11 w-full justify-start rounded-[20px] border-primary/10 bg-[#FDFEFF] text-left font-normal",
+                      "h-11 w-full justify-start rounded-[20px] border-primary/10 bg-white/90 text-left font-normal dark:bg-[#0F1726]",
                       !date && "text-muted-foreground"
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4 text-primary/60" />
                     {date ? format(date, "PPP") : <span>Pick a date</span>}
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto border-primary/10 p-0 dark:bg-[#111827]" align="start">
                     <Calendar
                       mode="single"
                       selected={date}
@@ -233,7 +233,7 @@ export function Timeline() {
                   placeholder="Tell the story..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[100px] rounded-[20px] border-primary/10 bg-[#FDFEFF] text-sm italic font-serif"
+                  className="min-h-[100px] rounded-[20px] border-primary/10 bg-white/90 text-sm italic font-serif dark:bg-[#0F1726]"
                   required
                 />
               </div>
@@ -244,7 +244,7 @@ export function Timeline() {
                 </Label>
                 <div className="flex flex-col gap-3">
                   {image ? (
-                    <div className="relative aspect-video w-full overflow-hidden rounded-[20px] border border-primary/10 bg-[#FDFEFF]">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-[20px] border border-primary/10 bg-white/90 dark:bg-[#0F1726]">
                       <img src={image} alt="Preview" className="h-full w-full object-cover" />
                       <Button
                         type="button"
@@ -257,7 +257,7 @@ export function Timeline() {
                       </Button>
                     </div>
                   ) : (
-                    <label className="group flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-[20px] border-2 border-dashed border-primary/18 bg-primary/5 transition-colors hover:bg-secondary/30">
+                    <label className="group flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-[20px] border-2 border-dashed border-primary/18 bg-primary/5 transition-colors hover:bg-secondary/30 dark:bg-white/4 dark:hover:bg-secondary/16">
                       <Camera className="text-primary/40 transition-colors group-hover:text-primary/70" size={24} />
                       <span className="mt-1 text-xs font-medium text-primary/50">Add photo</span>
                       <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
@@ -282,7 +282,7 @@ export function Timeline() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 rounded-[20px] bg-primary px-5 py-3 font-serif text-base font-black tracking-[0.08em] text-[#111111] shadow-[0_14px_28px_rgba(91,141,239,0.3)] transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_18px_34px_rgba(91,141,239,0.34)] disabled:translate-y-0 disabled:bg-primary/70 disabled:text-[#111111] disabled:opacity-100"
+                  className="flex-1 rounded-[20px] bg-primary px-5 py-3 font-serif text-base font-black tracking-[0.08em] text-[#111111] shadow-[0_14px_28px_rgba(126,200,227,0.3)] transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_18px_34px_rgba(126,200,227,0.34)] disabled:translate-y-0 disabled:bg-primary/70 disabled:text-[#111111] disabled:opacity-100 dark:text-[#0B1220]"
                   disabled={isSaving}
                 >
                   {isSaving ? (
@@ -307,7 +307,7 @@ export function Timeline() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           onClick={() => setShowForm(true)}
-          className="romantic-surface group flex w-full items-center justify-center gap-2 border-2 border-dashed border-primary/20 bg-[#F1F7FF] p-5 transition-all hover:border-primary/40 hover:bg-[#E8F2FF]"
+          className="romantic-surface group flex w-full items-center justify-center gap-2 border-2 border-dashed border-primary/20 bg-card/90 p-5 transition-all hover:border-primary/40 hover:bg-secondary/18 dark:bg-[#111827]"
         >
           <div className="flex items-center gap-2 font-serif font-semibold text-primary">
             <Sparkles size={20} className="transition-transform group-hover:scale-110" />
@@ -319,7 +319,7 @@ export function Timeline() {
 
       {memories.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 p-6 text-center">
-          <div className="rounded-full bg-[#F1F7FF] p-6 shadow-[0_10px_24px_rgba(91,141,239,0.12)]">
+          <div className="rounded-full bg-card p-6 shadow-[0_10px_24px_rgba(126,200,227,0.12)] dark:bg-[#111827]">
             <CalendarIcon size={48} className="text-primary/40" />
           </div>
           <h2 className="text-2xl font-serif font-medium text-primary">No memories yet</h2>
@@ -338,10 +338,15 @@ export function Timeline() {
               className="relative flex items-start gap-4 sm:gap-6"
             >
               <div className="absolute left-0 mt-2 flex h-10 w-10 items-center justify-center">
-                <Heart size={22} className="fill-[#8B7CF6] text-[#8B7CF6]" />
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1.05, 1.16, 1] }}
+                  transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Heart size={22} className="fill-[#FF4D6D] text-[#FF4D6D]" />
+                </motion.div>
               </div>
 
-              <Card className="romantic-surface ml-4 flex-1 overflow-hidden border-primary/10 bg-[#F7FBFF] transition-shadow hover:shadow-[0_12px_32px_rgba(31,42,68,0.1)] sm:ml-6">
+              <Card className="romantic-surface ml-4 flex-1 overflow-hidden border-primary/10 bg-card/90 transition-shadow hover:shadow-[0_12px_32px_rgba(84,126,160,0.1)] dark:bg-[#111827] dark:hover:shadow-[0_18px_36px_rgba(0,0,0,0.28)] sm:ml-6">
                 {memory.image && (
                   <div className="aspect-video w-full overflow-hidden">
                     <img
@@ -369,25 +374,25 @@ export function Timeline() {
                       >
                         <Trash2 size={16} />
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="rounded-3xl border-2 border-[#E7BCC7] bg-[#FFF7F8] shadow-[0_24px_60px_rgba(214,118,141,0.16)]">
+                      <AlertDialogContent className="rounded-3xl border-2 border-[#D6EFFF] bg-[#F6FCFF] shadow-[0_24px_60px_rgba(126,200,227,0.16)] dark:border-[#1F2A44] dark:bg-[#0F1726] dark:shadow-[0_28px_60px_rgba(0,0,0,0.38)]">
                         <AlertDialogHeader>
-                          <div className="mb-2 inline-flex w-fit rounded-full bg-[#F9DDE5] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#B66278]">
+                          <div className="mb-2 inline-flex w-fit rounded-full bg-[#DFF4FF] px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#4F7F95] dark:bg-[#162033] dark:text-[#BFE9FF]">
                             Warning
                           </div>
-                          <AlertDialogTitle className="font-serif text-2xl text-[#A6566B]">
+                          <AlertDialogTitle className="font-serif text-2xl text-[#3E677A] dark:text-[#D6F0FF]">
                             Delete Memory?
                           </AlertDialogTitle>
-                          <AlertDialogDescription className="rounded-[20px] border border-[#E9C7D0] bg-white/85 p-4 text-left italic font-serif text-[#875C68]">
+                          <AlertDialogDescription className="rounded-[20px] border border-[#D6EFFF] bg-white/90 p-4 text-left italic font-serif text-[#5B7387] dark:border-[#1F2A44] dark:bg-[#111827] dark:text-[#C3D4EA]">
                             This beautiful moment will be removed from your timeline.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="rounded-xl border-[#DFC0C8] font-serif font-semibold text-[#1F2A44]">
+                          <AlertDialogCancel className="rounded-xl border-[#D6EFFF] font-serif font-semibold text-[#1F2937] dark:border-[#1F2A44] dark:text-[#E5E7EB]">
                             Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDeleteMemory(memory.id)}
-                            className="rounded-xl border border-[#D89CAC] bg-[#EFB6C3] px-5 font-serif text-base font-black tracking-[0.04em] text-[#6A2F40] shadow-[0_12px_24px_rgba(214,118,141,0.16)] hover:bg-[#E9A8B8]"
+                            className="rounded-xl border border-[#B8DEEF] bg-[#DFF4FF] px-5 font-serif text-base font-black tracking-[0.04em] text-[#32576A] shadow-[0_12px_24px_rgba(126,200,227,0.16)] hover:bg-[#D1EEFF] dark:border-[#2A4269] dark:bg-[#18314A] dark:text-[#DFF4FF] dark:hover:bg-[#214163]"
                           >
                             Delete
                           </AlertDialogAction>
