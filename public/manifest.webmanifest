@@ -1,0 +1,23 @@
+{
+  "name": "Heart Count",
+  "short_name": "Heart Count",
+  "description": "A romantic couples anniversary app for memories, milestones, and love stories.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0F8FF",
+  "theme_color": "#7EC8E3",
+  "icons": [
+    {
+      "src": "/icon-heartcount.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-heartcount-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

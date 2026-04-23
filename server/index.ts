@@ -1,5 +1,6 @@
 import express, { type NextFunction, type Request, type Response } from "express";
 import { promises as fs } from "node:fs";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { randomBytes, randomUUID, scryptSync } from "node:crypto";
 
@@ -42,14 +43,23 @@ type AuthenticatedRequest = Request & {
 };
 
 const PORT = Number(process.env.PORT ?? 3001);
-const dataFile = path.resolve(process.cwd(), "server", "data.json");
+const dataFile = path.resolve(process.cwd(), process.env.DATA_FILE ?? "server/data.json");
+const distDir = path.resolve(process.cwd(), "dist");
+const allowedOrigin = process.env.ALLOWED_ORIGIN;
 
 const app = express();
 app.use(express.json({ limit: "25mb" }));
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  const requestOrigin = req.header("Origin");
+  const originToUse =
+    allowedOrigin && requestOrigin && allowedOrigin !== "*"
+      ? allowedOrigin
+      : allowedOrigin ?? requestOrigin ?? "*";
+
+  res.header("Access-Control-Allow-Origin", originToUse);
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  res.header("Vary", "Origin");
   if (req.method === "OPTIONS") {
     res.sendStatus(204);
     return;
@@ -316,6 +326,14 @@ app.delete("/api/account", authMiddleware, async (req, res) => {
   res.json({ ok: true });
 });
 
+if (existsSync(distDir)) {
+  app.use(express.static(distDir));
+
+  app.get(/^(?!\/api).*/, (_req, res) => {
+    res.sendFile(path.join(distDir, "index.html"));
+  });
+}
+
 app.listen(PORT, () => {
-  console.log(`Everlasting API running on http://127.0.0.1:${PORT}`);
+  console.log(`Heart Count API running on http://127.0.0.1:${PORT}`);
 });

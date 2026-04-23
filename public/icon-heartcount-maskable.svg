@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="160" fill="#0B1220" />
+  <circle cx="256" cy="256" r="182" fill="#7EC8E3" />
+  <path
+    d="M256 373C188 318 152 271 152 220C152 186 177 163 209 163C231 163 249 174 256 190C263 174 281 163 303 163C335 163 360 186 360 220C360 271 324 318 256 373Z"
+    fill="rgba(255,255,255,0.14)"
+    stroke="#ffffff"
+    stroke-width="14"
+    stroke-linejoin="round"
+  />
+  <text
+    x="256"
+    y="267"
+    text-anchor="middle"
+    font-family="Georgia, serif"
+    font-size="64"
+    font-weight="700"
+    fill="#ffffff"
+  >
+    HC
+  </text>
+</svg>

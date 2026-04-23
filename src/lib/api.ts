@@ -30,6 +30,15 @@ export interface LoginPayload {
 }
 
 const TOKEN_KEY = "everlasting_auth_token";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
+function buildApiUrl(path: string) {
+  if (/^https?:\/\//.test(path)) {
+    return path;
+  }
+
+  return `${API_BASE_URL}${path}`;
+}
 
 export function getAuthToken() {
   return window.localStorage.getItem(TOKEN_KEY);
@@ -48,7 +57,7 @@ async function apiRequest<T>(
   init: RequestInit = {},
   token = getAuthToken()
 ): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(buildApiUrl(path), {
     ...init,
     headers: {
       "Content-Type": "application/json",
